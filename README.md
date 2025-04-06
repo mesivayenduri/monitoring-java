@@ -26,6 +26,7 @@ This repository documents the setup of a Kubernetes monitoring stack using **Pro
 ## Flowchart
 ![alt text](Flowchart.png)
 
+- https://lucid.app/lucidchart/b52e7283-035f-4485-a1a9-dde5c061d019/edit?viewport_loc=-1726%2C-100%2C3348%2C1326%2C0_0&invitationId=inv_2d50fa6c-e912-4433-acb0-495c3319e94e
 
 ## 🔧 Key Configuration
 
