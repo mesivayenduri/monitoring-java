@@ -23,6 +23,10 @@ This repository documents the setup of a Kubernetes monitoring stack using **Pro
   - Prometheus Instance: `prometheus-mlab02`
   - Alertmanager Instance: `mlab02-alertmanager`
 
+## Flowchart
+![alt text](Flowchart.png)
+
+
 ## 🔧 Key Configuration
 
 ### Prometheus CRD
