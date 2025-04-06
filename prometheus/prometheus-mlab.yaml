@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus-mlab02
+  namespace: mlab02
+  labels:
+    release: prometheus
+spec:
+  serviceAccountName: mlab02-sa
+  serviceMonitorSelector:
+    matchLabels:
+      release: prometheus
+  serviceMonitorNamespaceSelector:
+    matchLabels:
+      kubernetes.io/metadata.name: mlab02
+  resources:
+    requests:
+      memory: 400Mi

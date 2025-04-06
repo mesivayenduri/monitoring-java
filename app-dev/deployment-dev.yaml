@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-development
+  namespace: development
+spec:
+  selector:
+    matchLabels:
+      app: myapp-development
+  template:
+    metadata:
+      labels:
+        app: myapp-development
+    spec:
+      containers:
+      - name: myapp-development
+        image: mesivayenduri/prometheus-test:latest
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - name: "http"
+          containerPort: 8080
+          protocol: TCP

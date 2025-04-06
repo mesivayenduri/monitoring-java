@@ -1,0 +1,18 @@
+global:
+  resolve_timeout: 5m
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 30s
+  repeat_interval: 5m
+  receiver: "slack-notifications"
+receivers:
+  - name: "slack-notifications"
+    slack_configs:
+      - send_resolved: true
+        api_url: "https://hooks.slack.com/services/xxxxxx/xxxxxxxxxxxx/xxxxxxxx"
+        channel: "#all-prometeus-alerts"
+
+
+# Create a secret with the above alertmanager.yaml
+# kubectl create secret generic alertmanager-dev-alertmanager --from-file=alertmanager.yaml=alert-manager/alert-manager.yaml -n development

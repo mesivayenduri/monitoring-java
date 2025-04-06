@@ -1,0 +1,8 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Alertmanager
+metadata:
+  name: dev-alertmanager
+  namespace: development
+spec:
+  replicas: 1
+  configSecret: alertmanager-dev-alertmanager

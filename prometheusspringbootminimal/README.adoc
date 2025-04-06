@@ -1,0 +1,85 @@
+= Minimal example on how to setup Spring Boot with Prometheus
+
+== What to expect
+
+Run a Spring Boot application an read metrics from JVM and annotated application methods using a Prometheus endpoint.
+
+== Motivation
+
+This is a working example for a minimal Spring-Boot 2.0.x app using Micrometer.io.
+
+== How to Run
+
+To run with maven
+
+    mvn compile spring-boot:run
+
+Open http://localhost:8080 to issue calls to be counted and to access the metrics.
+
+== Key bits and pieces
+
+
+. Add Micrometer to the projects.
+Add Actuator starter to let the autoconfiguration create a Prometheus metrics endpoint.
++
+.pom.xml
+[source,indent=0]
+----
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>...</version>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>...</version>
+        </dependency>
+----
+
+. Configure some specifics
++
+.MetricsApplicationConfig.java
+[source,indent=0]
+----
+@Configuration
+public class MetricsApplicationConfig {
+
+    // as of now, this aspect needs to be created manually, see
+    // https://github.com/micrometer-metrics/micrometer/issues/361
+    @Bean
+    public TimedAspect timedAspect(MeterRegistry registry) {
+        return new TimedAspect(registry);
+    }
+
+    public MetricsApplicationConfig(PrometheusMeterRegistry prometheusMeterRegistry) {
+        // add existing Prometheus modules as needed
+        new MemoryPoolsExports().register(prometheusMeterRegistry.getPrometheusRegistry());
+        new GarbageCollectorExports().register(prometheusMeterRegistry.getPrometheusRegistry());
+        new VersionInfoExports().register(prometheusMeterRegistry.getPrometheusRegistry());
+    }
+
+}
+----
+
+. Collect application metrics at specific methods
++
+.RestEndpoint.java
+[source,indent=0]
+----
+    @GetMapping("/countedCall")
+    @Timed(histogram = true) // customize this to use a histogram
+    public String countedCall() throws InterruptedException {
+        /* ... */
+        return "waited: " + delay + " ms";
+    }
+----
++
+.ServiceClass.java
+[source,indent=0]
+----
+    @Timed(value = "doSomething", description = "this is doing something")
+    public void doSomething() {
+        log.info("hi");
+    }
+----

@@ -1,0 +1,16 @@
+# We need ingress in real cluster to expose the prometheus service to which promxy can listen to and query.
+# As we are doing the lab in minikube environment we are going with NodePort
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-nodeport
+  namespace: mlab02
+spec:
+  type: NodePort
+  selector:
+    release: prometheus # This should match with the label of our prometheus mlab
+  ports:
+    - port: 9090
+      targetPort: 9090
+      nodePort: 30091

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: promxy-config
+  namespace: infra
+data:
+  promxy.yaml: |
+    server_groups:
+      - name: dev-prometheus
+        static_configs:
+          - targets:
+              - http://prometheus-operated.development.svc.cluster.local:9090
+      - name: mlab02-prometheus
+        static_configs:
+          - targets:
+              - http://prometheus-operated.mlab02.svc.cluster.local:9090
+
+# <-- Here goes the list of prometheus ingress/nodeport endpoints -->

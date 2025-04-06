@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promxy
+  namespace: infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: promxy
+  template:
+    metadata:
+      labels:
+        app: promxy
+    spec:
+      containers:
+      - name: promxy
+        image: quay.io/jacksontj/promxy:latest
+        args:
+          - "--config=/etc/promxy/promxy.yaml"
+        ports:
+          - containerPort: 8082
+        volumeMounts:
+          - name: config
+            mountPath: /etc/promxy
+            readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: promxy-config

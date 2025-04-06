@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: promxy
+  namespace: infra
+spec:
+  selector:
+    app: promxy
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
